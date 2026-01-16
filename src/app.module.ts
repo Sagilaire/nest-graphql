@@ -15,7 +15,13 @@ import { TodoModule } from './todo/todo.module';
       playground: false,
       plugins: [
         ApolloServerPluginLandingPageLocalDefault
-      ]
+      ],
+      cors: {
+        origin: ['https://studio.apollographql.com'],
+        credentials: true,
+        methods: ['GET', 'POST', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'apollographql-client-name', 'apollographql-client-version']
+      }
     }),
     HelloWorldModule,
     TodoModule,
