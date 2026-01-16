@@ -4,22 +4,17 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TodoModule } from './todo/todo.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { HelloWorldModule } from './hello-world/hello-world.module';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+// Eliminamos el import de 'apollo-server-core' para evitar conflictos
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      playground: false,
-      plugins: [ApolloServerPluginLandingPageLocalDefault],
-      // 🔥 CONFIGURACIÓN ESENCIAL PARA APOLLO STUDIO
-      introspection: true, // Apollo Studio NECESITA esto
-      cors: {
-        origin: true, // Permite todos los orígenes
-        credentials: true,
-      },
-      // 🔥 Path explícito
+      playground: true, 
+      introspection: true, 
+      cors: false, 
+      
       path: '/graphql',
     }),
     HelloWorldModule,

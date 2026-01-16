@@ -1,16 +1,16 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const logger = new Logger('Bootstrap');
   const app = await NestFactory.create(AppModule);
 
-  // 🔥 CORS PERMISIVO PARA DESARROLLO
   app.enableCors({
-    origin: '*', // Permite TODO en desarrollo
+    origin: true,
     credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'apollographql-client-name'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   });
 
   app.useGlobalPipes(
@@ -20,10 +20,13 @@ async function bootstrap() {
     })
   );
 
-  // 🔥 ESCUCHA EN TODAS LAS INTERFACES
-  await app.listen(3000, '0.0.0.0');
-  
-  console.log('✅ Servidor NestJS corriendo en http://0.0.0.0:3000');
-  console.log('📡 Acceso desde red local: http://192.168.1.49/graphql');
+  const PORT = 3000;
+  await app.listen(PORT, '0.0.0.0');
+
+  console.log(`✅ Servidor NestJS corriendo en http://0.0.0.0:${PORT}`);
+  console.log(`📡 Intenta acceder desde otro PC a: http://192.168.1.49:${PORT}/graphql`);
+
+  logger.log(`✅ Servidor NestJS corriendo en http://0.0.0.0:${PORT}`);
+  logger.log(`📡 Intenta acceder desde otro PC a: http://192.168.1.49:${PORT}/graphql`);
 }
 bootstrap();
